@@ -4,7 +4,7 @@ metadata:
   name: test-task
 spec:
   steps:
-    - name: run-tests
+    - name: Run unit tests with nose
       image: python:3.10
       script: |
         pip install nose
@@ -15,9 +15,11 @@ kind: Task
 metadata:
   name: cleanup-task
 spec:
+  params:
+    - name: WORKSPACE_SOURCE_PATH
+      default: /workspace
   steps:
     - name: cleanup
       image: alpine
       script: |
-        echo "Cleaning up workspace..."
-        rm -rf build/ dist/ *.egg-info
+        rm -rf $(params.WORKSPACE_SOURCE_PATH)/*
